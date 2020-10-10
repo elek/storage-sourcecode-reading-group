@@ -9,7 +9,7 @@ An effort to understand better the architecture of existing Open Source **storag
 Inspired by:
 
  * [Papers We Love](https://paperswelove.org/) reading groups
- * [The Architecture of Open Source Application](https://aosabook.org/en/index.html) and [@eatonphil](https://twitter.com/eatonphil)'s suggestion in [HN thread](https://news.ycombinator.com/item?id=24332485)
+ * [The Architecture of Open Source Application](https://aosabook.org/en/index.html) and [@eatonphil](https://twitter.com/phil_eaton)'s suggestion in [HN thread](https://news.ycombinator.com/item?id=24332485)
 
 Writing storage can be hard, but understanding the details of the architecture can be even harder. Papers and docs not always answer all of the questions and some important details can be understood only from source code and with experimenting.
 
