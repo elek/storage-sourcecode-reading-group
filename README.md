@@ -36,7 +36,7 @@ If you would like to join to the conversation:
 ## Scheduling
 
  1. Current project: minio,
- 2. Closing call: 2020.12.01, 4pm CET. [https://zoom.us/j/97830448292](https://zoom.us/j/97830448292)
+ 2. Closing call: 2021.01.05, 4pm CET. [https://zoom.us/j/97830448292](https://zoom.us/j/97830448292)
 
 Backlog (to suggest new projects, open a PR):
 
