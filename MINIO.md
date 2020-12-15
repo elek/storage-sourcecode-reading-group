@@ -84,8 +84,99 @@ Format seems to be this one:
 
 Related source: https://github.com/minio/minio/blob/267d7bf0a9f114065314a0b2863f7fcc9e923012/cmd/xl-storage-format-v2.go
 
+
+## Erasure coding
+
+This is the default distributed write (no 3-way replication).
+
+
+[server-main.go](https://github.com/minio/minio/blob/master/cmd/server-main.go)
+```
+// Initialize object layer with the supplied disks, objectLayer is nil upon any error.
+func newObjectLayer(ctx context.Context, endpointServerSets EndpointServerSets) (newObject ObjectLayer, err error) {
+	// For FS only, directly use the disk.
+	if endpointServerSets.NEndpoints() == 1 {
+		// Initialize new FS object layer.
+		return NewFSObjectLayer(endpointServerSets[0].Endpoints[0].Path)
+	}
+
+	return newErasureServerSets(ctx, endpointServerSets)
+}
+```
+
+Main read/write logic is in the [erasure-object.go](https://github.com/minio/minio/blob/master/cmd/erasure-object.go).
+
+ * Write is successful if written to the quorum (of disks).
+ * Roles of disks are shuffled (parity vs data) for each keys (no block level segmentation)
+
+Metadata for write: 
+
+```
+dd if=out2/xl.meta skip=8 bs=1 | msgpack2json -d
+310+0 records in
+310+0 records out
+310 bytes copied, 0.000288978 s, 1.1 MB/s
+{
+    "Versions": [
+        {
+            "Type": 1,
+            "V2Obj": {
+                "ID": <bin of size 16>,
+                "DDir": <bin of size 16>,
+                "EcAlgo": 1,
+                "EcM": 3,
+                "EcN": 2,
+                "EcBSize": 10485760,
+                "EcIndex": 5,
+                "EcDist": [
+                    5,
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "CSumAlgo": 1,
+                "PartNums": [
+                    1
+                ],
+                "PartETags": [
+                    ""
+                ],
+                "PartSizes": [
+                    216773700
+                ],
+                "PartASizes": [
+                    216773700
+                ],
+                "Size": 216773700,
+                "MTime": 1607974278087111556,
+                "MetaSys": {},
+                "MetaUsr": {
+                    "content-type": "application/octet-stream",
+                    "etag": "35205fa56cbd73c2fe37f9d33e3a4788"
+                }
+            }
+        }
+    ]
+}
+```
+
+
+Metadata is written first, and data is moved to the final location "commit":
+
+```
+
+	// Write unique `xl.meta` for each disk.
+	if onlineDisks, err = writeUniqueFileInfo(ctx, onlineDisks, minioMetaTmpBucket, tempObj, partsMetadata, writeQuorum); err != nil {
+		return ObjectInfo{}, toObjectErr(err, bucket, object)
+	}
+
+	// Rename the successfully written temporary object to final location.
+	if onlineDisks, err = renameData(ctx, onlineDisks, minioMetaTmpBucket, tempObj, fi.DataDir, bucket, object, writeQuorum, nil); err != nil {
+		return ObjectInfo{}, toObjectErr(err, bucket, object)
+	}
+```
+
 ## Open questions
 
- * Is three way replication still supported or only EC?
- * Where is the code which handles the server2server replications
  * Why O_DIRECT is required?
