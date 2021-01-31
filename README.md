@@ -15,29 +15,6 @@ Writing storage can be hard, but understanding the details of the architecture c
 
 ## How does it work?
 
-For each period a storage project is chosen to evaluate. Participants check the source code, start to use it and test it.
-
-Findings are discussed on chat, collected in a file (as a wiki), and finally discussed on the *closing* call. In case of too many open questions, the period can be extended.
-
-Note: due to the limitation of Github Wiki pages (eg. no notification on slack) normal markdown files are used.
-
-**You can use this repository as a wiki. All the pull requests will be merged automatically, and author will be added to the Gitub repo as collaborator)**
-
-**After the first PR, feel free to edit the files directly**
-
-
-If you would like to join to the conversation:
-
- * Connect to the [chat](https://communityinviter.com/apps/stosorego/storage-source-code-reading-group)
- * Check the missing (or existing) sections of the actual "wiki" file (eg. technical description of read/write path) and contribute more details
- * Run project, measure performance, investigate messages, break it or just us it
- * Call-in to the closing call and share your experience
-
-## Scheduling
-
- 1. Current project: minio,
- 2. Closing call: 2021.01.05, 4pm CET. [https://zoom.us/j/97830448292](https://zoom.us/j/97830448292)
-
 Backlog (to suggest new projects, open a PR):
 
  * [chubaofs](https://github.com/chubaofs/chubaofs)
@@ -82,9 +59,4 @@ Structure can be changed over the time, but here are some initial questions:
  * References
   * related talks, papers
 
-## How to join?
-
- * Slack instance: [join](https://communityinviter.com/apps/stosorego/storage-source-code-reading-group)
- * Zoom: https://zoom.us/j/97830448292 check the scheduling section about the closing calls
- * Open pull request to modify this page with any suggestion
  *
